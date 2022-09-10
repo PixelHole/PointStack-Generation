@@ -12,7 +12,7 @@ public class SandMound_Generator_Editor : Editor
         SandMound_Generator worldgenerator = (SandMound_Generator) target;
         if (GUILayout.Button("Generate"))
         {
-            worldgenerator.Generate();
+            worldgenerator.Create();
         }
     }
 }
