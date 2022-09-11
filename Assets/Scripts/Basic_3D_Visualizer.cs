@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Basic_3D_Visualizer : MonoBehaviour
 {
-    private SandMound_Generator WorldGenerator;
+    private PointStack_Generator WorldGenerator;
     public GameObject GroundTile;
     private List<GameObject> tiles = new List<GameObject>();
     private void Start()
@@ -14,7 +14,7 @@ public class Basic_3D_Visualizer : MonoBehaviour
     }
     void GetGenerator()
     {
-        WorldGenerator = gameObject.GetComponent<SandMound_Generator>();
+        WorldGenerator = gameObject.GetComponent<PointStack_Generator>();
     }
     public void CreateCubes()
     {

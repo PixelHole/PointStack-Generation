@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
-public class SandMound_Generator : MonoBehaviour
+public class PointStack_Generator : MonoBehaviour
 {
     //Input Variables
     public int width, length; // width = x and length = y in array;
@@ -14,8 +14,8 @@ public class SandMound_Generator : MonoBehaviour
     [Header("Walker settings")] 
     public Vector2Int position;
     public bool Turn;
-    public float TurnChance;
-    public int Levels, lifetime;
+    public float TurnChance, value;
+    public int Levels, lifetime, Count;
     
     //Data
     private float[,] world;
@@ -36,7 +36,6 @@ public class SandMound_Generator : MonoBehaviour
     {
         world = new float[width, length];
     }
-
     private void ClearWorld()
     {
         
@@ -46,15 +45,29 @@ public class SandMound_Generator : MonoBehaviour
         Vector2Int worldsize = new Vector2Int(width, length);
         for (int i = 0; i < Levels; i++)
         {
-            walker walker = new walker(position, Turn, i + 1, TurnChance, lifetime, worldsize);
-            while (walker.Lifetime >= 0)
+            List<walker> walkers = new List<walker>();
+            for (int j = 0; j < Count; j++)
             {
-                if (world[walker.Position.x, walker.Position.y] < walker.Level)
+                walkers.Add(new walker(position, Turn, i + 1, TurnChance, lifetime, worldsize, value));
+            }
+            while (walkers.Count > 0)
+            {
+                foreach (var walker in walkers.ToArray())
                 {
-                    world[walker.Position.x, walker.Position.y] += 1;
-                    walker.ReduceLifetime(1);
+                    if (walker.Lifetime > 0)
+                    {
+                        if (world[walker.Position.x, walker.Position.y] < walker.Target_Level)
+                        {
+                            world[walker.Position.x, walker.Position.y] += walker.Value;
+                            walker.ReduceLifetime(1);
+                        }
+                        walker.Step();
+                    }
+                    else
+                    {
+                        walkers.Remove(walker);
+                    }
                 }
-                walker.Step();
             }
         }
         WorldGenerationFinished.Invoke();
@@ -68,23 +81,23 @@ public class SandMound_Generator : MonoBehaviour
 class walker
 {
     public Vector2Int Position, Direction, WorldSize;
-    public float Turn_Chance;
-    public int Level, Lifetime;
+    public float Turn_Chance, Value;
+    public int Target_Level, Lifetime;
     public bool Turn, OverLayTile, Manual_Level;
 
-    public walker(Vector2Int position, bool turn, int level,float TurnChance, int lifetime, Vector2Int worldSize)
+    public walker(Vector2Int position, bool turn, int targetLevel,float TurnChance, int lifetime, Vector2Int worldSize, float value)
     {
         Position = position;
         Turn = turn;
-        Level = level;
+        Target_Level = targetLevel;
         Turn_Chance = TurnChance;
         Lifetime = lifetime;
         WorldSize = worldSize;
+        Value = value;
     }
     public void Step()
     {
-        Debug.Log("step taked " + Position + Level);
-        if (Random.Range(0,1) < Turn_Chance)
+        if (Random.Range(0,100) < Turn_Chance)
         {
             List<Vector2Int> directions = new List<Vector2Int>()
             {
