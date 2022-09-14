@@ -2,12 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Basic_3D_Visualizer : MonoBehaviour
 {
     private PointStack_Generator WorldGenerator;
     public GameObject GroundTile;
     private List<GameObject> tiles = new List<GameObject>();
+    public VisualizerColorLibrary ColorLibrary;
     private void Start()
     {
         GetGenerator();
@@ -16,7 +18,7 @@ public class Basic_3D_Visualizer : MonoBehaviour
     {
         WorldGenerator = gameObject.GetComponent<PointStack_Generator>();
     }
-    public void CreateCubes()
+    public void Visualize()
     {
         if (!WorldGenerator)
         {
@@ -33,6 +35,7 @@ public class Basic_3D_Visualizer : MonoBehaviour
                     Vector3 pos = new Vector3(x, y / 2, z);
                     tiles.Add(Instantiate(GroundTile, pos, Quaternion.identity, transform));
                     tiles[tiles.Count - 1].transform.localScale = new Vector3(1, y, 1);
+                    tiles[tiles.Count - 1].GetComponent<MeshRenderer>().material.color = ColorLibrary.GetColorForHeight(y);
                 }
             }
         }

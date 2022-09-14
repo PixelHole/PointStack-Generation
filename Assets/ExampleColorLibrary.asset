@@ -10,5 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 956528c3df4ffbf43b1058a418b8d925, type: 3}
-  m_Name: default
+  m_Name: ExampleColorLibrary
   m_EditorClassIdentifier: 
+  heights:
+  - {x: -5, y: 0}
+  - {x: 0, y: 0.5}
+  - {x: 0.5, y: 3}
+  - {x: 3, y: 10}
+  - {x: 10, y: 20}
+  colors:
+  - {r: 0.6627451, g: 0.9189412, b: 0.98039216, a: 1}
+  - {r: 0.9803922, g: 0.9294118, b: 0.6627451, a: 1}
+  - {r: 0.72156864, g: 0.9450981, b: 0.48627454, a: 1}
+  - {r: 0.5058824, g: 0.54509807, b: 0.59607846, a: 1}
+  - {r: 0.93044674, g: 0.9685888, b: 0.9716981, a: 1}

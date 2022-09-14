@@ -13,7 +13,7 @@ public class PointStack_Generator : MonoBehaviour
     //Test Input variables
     [Header("Walker settings")] 
     public Vector2Int position;
-    public bool Turn;
+    public bool RandomSpawnLocation, Turn;
     public float TurnChance, value;
     public int Levels, lifetime, Count;
     
@@ -48,7 +48,16 @@ public class PointStack_Generator : MonoBehaviour
             List<walker> walkers = new List<walker>();
             for (int j = 0; j < Count; j++)
             {
-                walkers.Add(new walker(position, Turn, i + 1, TurnChance, lifetime, worldsize, value));
+                Vector2Int pos;
+                if (RandomSpawnLocation)
+                {
+                    pos = new Vector2Int(Random.Range(0, width), Random.Range(0, length));
+                }
+                else
+                {
+                    pos = position;
+                }
+                walkers.Add(new walker(pos, Turn, i + 1, TurnChance, lifetime, worldsize, value));
             }
             while (walkers.Count > 0)
             {
@@ -126,6 +135,6 @@ class walker
     }
     public bool IsPositionInBounds(Vector2Int pos)
     {
-        return pos.x > 0 & pos.y > 0 & pos.x < WorldSize.x & pos.y < WorldSize.y;
+        return pos.x >= 0 & pos.y >= 0 & pos.x < WorldSize.x & pos.y < WorldSize.y;
     }
 }
