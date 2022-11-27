@@ -12,10 +12,10 @@ public class PointStack_Generator : MonoBehaviour
     
     //Test Input variables
     [Header("Walker settings")] 
-    public Vector2Int position;
+    public List<Vector4> positions;
     public bool RandomSpawnLocation, Turn;
     public float TurnChance, value;
-    public int Levels, lifetime, Count;
+    public int Levels, lifetime;
     
     //Data
     private float[,] world;
@@ -46,19 +46,27 @@ public class PointStack_Generator : MonoBehaviour
         for (int i = 0; i < Levels; i++)
         {
             List<walker> walkers = new List<walker>();
-            for (int j = 0; j < Count; j++)
+
+            foreach (var pos in positions)
             {
-                Vector2Int pos;
-                if (RandomSpawnLocation)
+                if (pos.w <= i + 1)
                 {
-                    pos = new Vector2Int(Random.Range(0, width), Random.Range(0, length));
+                    for (int j = 0; j < pos.z; j++)
+                    {
+                        Vector2Int spawnPos;
+                        if (RandomSpawnLocation)
+                        {
+                            spawnPos = new Vector2Int(Random.Range(0, width), Random.Range(0, length));
+                        }
+                        else
+                        {
+                            spawnPos = new Vector2Int((int)pos.x, (int)pos.y);
+                        }
+                        walkers.Add(new walker(spawnPos, Turn, (int)pos.w, TurnChance, lifetime, worldsize, value));
+                    }
                 }
-                else
-                {
-                    pos = position;
-                }
-                walkers.Add(new walker(pos, Turn, i + 1, TurnChance, lifetime, worldsize, value));
             }
+            
             while (walkers.Count > 0)
             {
                 foreach (var walker in walkers.ToArray())

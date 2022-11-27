@@ -100,7 +100,8 @@ public class Basic_3D_Polygon_Visualizer : MonoBehaviour
         {
             for (int x = 0; x < width - 1; x++)
             {
-                float min = 0, max = 0;
+                float min = worldGenerator.GetWorldValueAt(x, y)
+                    , max = worldGenerator.GetWorldValueAt(x, y);
                 
                 for (int i = 0; i < 2; i++)
                 {
